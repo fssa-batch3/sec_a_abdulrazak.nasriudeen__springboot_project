@@ -14,7 +14,7 @@ public class ServiceDetail {
     @Column(name = "service_list_id")
     private int serviceListId;
 
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
     private Booking booking;
 

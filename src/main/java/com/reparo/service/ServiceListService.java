@@ -33,6 +33,8 @@ public class ServiceListService {
             int id = 0 ;
             if(bookingRepository!= null && serviceListRepository != null){
                 Booking booking =  bookingRepository.findByBookingId(bookingId);
+                booking.setOtp(0);
+                bookingRepository.save(booking);
                 ServiceDetail serviceList = new ServiceDetail(booking);
                 ServiceDetail res =  serviceListRepository.save(serviceList);
                 id = res.getServiceListId();
