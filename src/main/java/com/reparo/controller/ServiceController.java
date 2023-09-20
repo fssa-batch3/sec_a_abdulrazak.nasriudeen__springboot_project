@@ -1,5 +1,6 @@
 package com.reparo.controller;
 
+import com.reparo.dto.service.ServiceDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.ServiceListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,11 @@ public class ServiceController {
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
         }
-
-
     }
+
+//    @PostMapping("/createService")
+//    public ResponseEntity<String> createService(@RequestBody ServiceDto service){
+//
+//
+//    }
 }
