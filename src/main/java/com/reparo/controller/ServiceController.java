@@ -1,6 +1,7 @@
 package com.reparo.controller;
 
 import com.reparo.dto.service.ServiceDto;
+import com.reparo.dto.service.ServiceListResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.ServiceListService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,4 +30,14 @@ public class ServiceController {
 //
 //
 //    }
+    @GetMapping("getServiceListByBookingId")
+    public ResponseEntity<ServiceListResponseDto> getServiceById(@RequestParam int bookingId){
+        try {
+            ServiceListResponseDto service = listService.getServiceListById(bookingId);
+            return ResponseEntity.ok(service);
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
 }

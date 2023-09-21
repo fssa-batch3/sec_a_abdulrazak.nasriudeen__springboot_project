@@ -1,7 +1,9 @@
 package com.reparo.service;
 
 import com.reparo.datamapper.ServiceMapper;
+import com.reparo.dto.service.RejectServiceListDto;
 import com.reparo.dto.service.ServiceDto;
+import com.reparo.dto.service.ServiceListResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.exception.ValidationException;
 import com.reparo.model.Booking;
@@ -13,6 +15,8 @@ import com.reparo.repository.ServiceListRepository;
 import com.reparo.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ServiceListService {
@@ -57,7 +61,7 @@ public class ServiceListService {
                 bookingRepository.save(booking);
                 ServiceDetail serviceList = new ServiceDetail(booking);
                 ServiceDetail res =  serviceListRepository.save(serviceList);
-                id = res.getServiceListId();
+                id = res.getServiceDetailId();
 
 
             }
@@ -73,7 +77,7 @@ public class ServiceListService {
             validate.serviceCredentialValidation(list);
             isServiceListId(dto.getServiceListId());
             if(serviceListRepository!=null && serviceRepository != null){
-                ServiceDetail serviceDetail =serviceListRepository.findByServiceListId(dto.getServiceListId());
+                ServiceDetail serviceDetail =serviceListRepository.findByServiceDetailId(dto.getServiceListId());
                 list.setServiceDetail(serviceDetail);
                 ServiceList createdService = serviceRepository.save(list);
                 id =  createdService.getServiceId();
@@ -99,6 +103,73 @@ public class ServiceListService {
                updated = serviceRepository.save(exists);
             }
             return updated.getServiceName().equals(dto.getServiceName());
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
+    public void deleteService(int serviceId) throws ServiceException{
+        try {
+            isServiceId(serviceId);
+            if (serviceRepository!=null){
+                serviceRepository.deleteById(serviceId);
+            }
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+    public boolean acceptServiceList(int serviceListId) throws  ServiceException{
+        boolean chk = false;
+        try {
+            isServiceListId(serviceListId);
+            if (serviceListRepository!=null){
+                ServiceDetail service = serviceListRepository.findByServiceDetailId(serviceListId);
+                service.setAcceptStatus(true);
+                ServiceDetail changed = serviceListRepository.save(service);
+                chk = changed.isAcceptStatus();
+
+            }
+            return chk;
+
+
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+    public boolean rejectServiceList(RejectServiceListDto rejectService) throws ServiceException{
+        try {
+            boolean chk =  false;
+            isServiceListId(rejectService.getServiceListId());
+            if(serviceListRepository !=null){
+                ServiceDetail service = serviceListRepository.findByServiceDetailId(rejectService.getServiceListId());
+                service.setAcceptStatus(false);
+                service.setCancelStatus(true);
+                service.setLive(false);
+                service.setCancelReason(rejectService.getCancelReason());
+                ServiceDetail changed = serviceListRepository.save(service);
+                chk = changed.isCancelStatus();
+            }
+            return chk;
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
+    public ServiceListResponseDto getServiceListById(int bookingId) throws ServiceException{
+        try {
+            ServiceListResponseDto response =  new ServiceListResponseDto();
+            bookingService.isBookingExists(bookingId);
+            if(serviceListRepository!=null && serviceRepository!=null && bookingRepository!=null){
+                Booking booking =  bookingRepository.findByBookingId(bookingId);
+                ServiceDetail service =  serviceListRepository.findByBooking(booking);
+                List<ServiceList> listOfService = serviceRepository.findByServiceDetail(service);
+                service.setServiceAmount(listOfService);
+                ServiceDetail serviceList =  serviceListRepository.save(service);
+                response = map.mapServiceListToResponse(serviceList,listOfService);
+            }
+            return response;
+
+
         } catch (ServiceException e) {
             throw new ServiceException(e.getMessage());
         }

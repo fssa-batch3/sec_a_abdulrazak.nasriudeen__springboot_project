@@ -1,13 +1,14 @@
 package com.reparo.service;
 
+import com.reparo.dto.service.RejectServiceListDto;
 import com.reparo.dto.service.ServiceDto;
+import com.reparo.dto.service.ServiceListResponseDto;
 import com.reparo.exception.ServiceException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
  class ServiceListTest {
@@ -51,6 +52,46 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
         }
 
     }
+    @Test
+    void deleteServiceTest(){
+        try {
+            listService.deleteService(1);
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Test
+    void acceptStatusTest(){
+        try {
+            assertTrue(listService.acceptServiceList(1));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    @Test
+    void cancelServiceListTest(){
+        try {
+            RejectServiceListDto dto = new RejectServiceListDto();
+            dto.setServiceListId(1);
+            dto.setCancelReason("high cost");
+            assertTrue(listService.rejectServiceList(dto));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    @Test
+    void getServiceListByIdTest(){
+        try {
+           ServiceListResponseDto dto = listService.getServiceListById(10);
+           System.out.println(dto.getListOfServices().isEmpty());
+
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
 
 
 }

@@ -12,7 +12,7 @@ public class ServiceDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "service_list_id")
-    private int serviceListId;
+    private int serviceDetailId;
 
     @OneToOne
     @JoinColumn(name = "booking_id", nullable = false)
@@ -30,14 +30,28 @@ public class ServiceDetail {
     @Column(name = "cancel_reason")
     private String cancelReason;
 
+    @Column(name = "is_live")
+    private boolean isLive;
+
+
     // Getter and Setter methods
 
-    public int getServiceListId() {
-        return serviceListId;
+    public boolean isLive() {
+        return isLive;
     }
 
-    public void setServiceListId(int serviceListId) {
-        this.serviceListId = serviceListId;
+
+
+    public void setLive(boolean live) {
+        isLive = live;
+    }
+
+    public int getServiceDetailId() {
+        return serviceDetailId;
+    }
+
+    public void setServiceDetailId(int serviceDetailId) {
+        this.serviceDetailId = serviceDetailId;
     }
 
     public Booking getBooking() {
