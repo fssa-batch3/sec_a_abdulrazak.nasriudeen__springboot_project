@@ -25,11 +25,18 @@ public class ServiceController {
         }
     }
 
-//    @PostMapping("/createService")
-//    public ResponseEntity<String> createService(@RequestBody ServiceDto service){
-//
-//
-//    }
+    @PostMapping("/createService")
+    public ResponseEntity<String> createService(@RequestBody ServiceDto service){
+        try {
+            int id = listService.createService(service);
+            return ResponseEntity.ok(Integer.toString(id));
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+
+        }
+
+
+    }
     @GetMapping("getServiceListByBookingId")
     public ResponseEntity<ServiceListResponseDto> getServiceById(@RequestParam int bookingId){
         try {
@@ -37,6 +44,27 @@ public class ServiceController {
             return ResponseEntity.ok(service);
         } catch (ServiceException e) {
             return ResponseEntity.notFound().build();
+        }
+
+    }
+    @PostMapping("/updateService")
+    public ResponseEntity<String> updateService(@RequestBody ServiceDto service){
+        try {
+            int id =  listService.updateService(service);
+            return ResponseEntity.ok(Integer.toString(id));
+        } catch (ServiceException e) {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+    @GetMapping("/deleteService")
+    public ResponseEntity<String> deleteService(@RequestParam int serviceId){
+        try {
+           listService.deleteService(serviceId);
+          return ResponseEntity.ok("true");
+        } catch (ServiceException e) {
+            return ResponseEntity.ok("false");
+
         }
 
     }

@@ -89,7 +89,7 @@ public class ServiceListService {
         }
 
     }
-    public boolean updateService(ServiceDto dto) throws ServiceException{
+    public int updateService(ServiceDto dto) throws ServiceException{
         try {
             ServiceList updated =  new ServiceList();
 
@@ -102,7 +102,7 @@ public class ServiceListService {
               exists.setServicePrice(dto.getServicePrice());
                updated = serviceRepository.save(exists);
             }
-            return updated.getServiceName().equals(dto.getServiceName());
+            return updated.getServiceId();
         } catch (ServiceException e) {
             throw new ServiceException(e.getMessage());
         }
@@ -114,6 +114,7 @@ public class ServiceListService {
             if (serviceRepository!=null){
                 serviceRepository.deleteById(serviceId);
             }
+
         } catch (ServiceException e) {
             throw new ServiceException(e.getMessage());
         }

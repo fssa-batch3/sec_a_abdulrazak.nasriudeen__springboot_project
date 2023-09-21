@@ -46,7 +46,7 @@ import static org.junit.jupiter.api.Assertions.*;
         dto.setServiceListId(1);
         dto.setServiceId(1);
         try {
-            assertTrue(listService.updateService(dto));
+            assertNotEquals(0,listService.updateService(dto));
         } catch (ServiceException e) {
             throw new RuntimeException(e);
         }
