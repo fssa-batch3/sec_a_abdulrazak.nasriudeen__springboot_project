@@ -1,9 +1,11 @@
 package com.reparo.controller;
 
+import com.reparo.dto.ApiResponse;
 import com.reparo.dto.user.UserRequestDto;
 import com.reparo.dto.user.UserResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.UserService;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.http.ResponseEntity;
@@ -11,55 +13,71 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RestController
-@RequestMapping("/user")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class UserController {
 @Autowired
 private  UserService userService ;
-    @PostMapping("/createUser")
-    public ResponseEntity<String> createResource(@RequestBody UserRequestDto request) {
+    @PostMapping("/reparo/user/createUser")
+    public ResponseEntity<ApiResponse> createResource(@RequestBody UserRequestDto request) {
         try {
           int id = userService.createUser(request);
-            return ResponseEntity.ok(Integer.toString(id));
+          JSONObject obj =  new JSONObject();
+          obj.put("id",id);
+          String str =  obj.toString();
+            ApiResponse response =  new ApiResponse(200,"success");
+            response.setData(str);
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            // If a ServiceException occurs, return an error response with a 400 Bad Request status code
-            return ResponseEntity.ok(e.getMessage());
+            ApiResponse response =  new ApiResponse(400,"failure",e.getMessage());
+            return ResponseEntity.ok(response);
         }
     }
-    @GetMapping("/findByNum")
-    public ResponseEntity<String>getUserByNumber(@RequestParam("number") long number){
+    @PostMapping("/reparo/user/loginUser")
+    public ResponseEntity<ApiResponse> loginUser(@RequestBody UserRequestDto requestDto){
         try {
-            UserResponseDto resp = userService.findUserByNumber(number);
-            return ResponseEntity.ok(resp.toString());
-        } catch (ServiceException e) {
-            // If a ServiceException occurs, return an error response with a 400 Bad Request status code
-            return ResponseEntity.ok(e.getMessage());
-        }
+            UserResponseDto userDto =  userService.loginUser(requestDto);
+            JSONObject obj =  new JSONObject(userDto);
 
-    }
-    @GetMapping("/findById")
-    public ResponseEntity<String>getUserById(@RequestParam("id") int id){
-        try {
-            UserResponseDto resp = userService.findUserById(id);
-            return ResponseEntity.ok(resp.toString());
-        } catch (ServiceException e) {
-            return ResponseEntity.ok(e.getMessage());
-        }
-
-    }
-
-
-
-    @PostMapping("/loginUser")
-    public ResponseEntity<String> loginUser(@RequestBody UserRequestDto requestDto){
-        try {
-            UserResponseDto responseDto =  userService.loginUser(requestDto);
-            return ResponseEntity.ok(responseDto.toString());
+            ApiResponse response =  new ApiResponse(200,"success");
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
 
         }catch (ServiceException e ){
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
 
         }
     }
+    @GetMapping("/reparo/user/findByNum")
+    public ResponseEntity<ApiResponse>getUserByNumber(@RequestParam("number") long number){
+        try {
+            UserResponseDto userDto = userService.findUserByNumber(number);
+            JSONObject obj =  new JSONObject(userDto);
+            ApiResponse response =  new ApiResponse(200,"success");
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
+        } catch (ServiceException e) {
+
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+        }
+
+    }
+    @GetMapping("/reparo/user/findById")
+    public ResponseEntity<ApiResponse>getUserById(@RequestParam("id") int id){
+        try {
+            UserResponseDto userDto = userService.findUserById(id);
+            JSONObject obj =  new JSONObject(userDto);
+            ApiResponse response =  new ApiResponse(200,"success");
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
+        } catch (ServiceException e) {
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+        }
+
+    }
+
+
+
+
 
 }
