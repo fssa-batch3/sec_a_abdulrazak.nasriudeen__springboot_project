@@ -122,6 +122,26 @@ public class BookingService {
             throw new ServiceException(e.getMessage());
         }
     }
+    public boolean cancelBooking(int bookingId , String role) throws ServiceException{
+        try {
+            boolean chk = true ;
+            isBookingExists(bookingId);
+            if(bookingRepository!=null){
+                Booking book = bookingRepository.findByBookingId(bookingId);
+                if(role.equals("user")){
+                    book.setRequestStatus(false);
+                }else{
+                    book.setAcceptStatus(false);
+                }
+                book.setLive(false);
+                Booking canceled = bookingRepository.save(book);
+                chk = canceled.isLive();
+            }
+            return !chk;
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
 
 
     }

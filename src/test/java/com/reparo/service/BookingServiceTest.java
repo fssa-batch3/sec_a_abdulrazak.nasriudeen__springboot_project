@@ -67,5 +67,12 @@ public class BookingServiceTest {
             throw new RuntimeException(e);
         }
     }
-
+    @Test
+    void cancelBookingTest(){
+        try {
+            assertTrue(service.cancelBooking(8,"user"));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

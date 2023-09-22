@@ -176,6 +176,18 @@ public class ServiceListService {
         }
 
     }
+    public boolean makeServiceListLive(int serviceDetailId) throws ServiceException{
+        try {
+            isServiceListId(serviceDetailId);
+            ServiceDetail detail = serviceListRepository.findByServiceDetailId(serviceDetailId);
+            detail.setLive(true);
+            ServiceDetail live = serviceListRepository.save(detail);
+            return live.isLive();
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
 
 
 

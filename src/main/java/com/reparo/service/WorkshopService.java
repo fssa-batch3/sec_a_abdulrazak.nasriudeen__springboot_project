@@ -146,7 +146,7 @@ public class WorkshopService {
                 List<Booking> bookings =  bookingRepository.findByBookingCity(arr[0]);
                 if(bookings.isEmpty()) throw new ServiceException("No Bookings Available");
                 for (Booking book:bookings) {
-                    if(!book.isAcceptStatus()){
+                    if(!book.isAcceptStatus() && book.isLive()){
                         BookingResponseDto responseDto =  bookingMap.mapBookingToResponse(book);
                         double dis  = calculateDistance(lat,lon,book.getLatitude(),book.getLongitude());
                         responseDto.setDistance(dis);

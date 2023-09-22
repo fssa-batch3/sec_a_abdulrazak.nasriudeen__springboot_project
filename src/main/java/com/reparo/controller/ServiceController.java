@@ -68,4 +68,15 @@ public class ServiceController {
         }
 
     }
+    @GetMapping("makeServiceLive")
+    public ResponseEntity<String> makeLive(@RequestParam int serviceDetailId){
+
+        try {
+            listService.makeServiceListLive(serviceDetailId);
+          return   ResponseEntity.ok("true");
+        } catch (ServiceException e) {
+           return ResponseEntity.ok(e.getMessage());
+
+        }
+    }
 }

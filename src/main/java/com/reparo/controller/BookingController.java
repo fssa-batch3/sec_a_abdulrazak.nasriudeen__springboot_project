@@ -56,6 +56,15 @@ public class BookingController {
             return ResponseEntity.noContent().build();
         }
     }
+    @GetMapping("/cancelBooking")
+    public ResponseEntity<String> cancelBooking(@RequestParam int bookingId , @RequestParam String user){
+        try {
+            bookingService.cancelBooking(bookingId,user);
+            return ResponseEntity.ok("true");
+        } catch (ServiceException e) {
+            return ResponseEntity.ok("false");
+        }
+    }
 
 
 

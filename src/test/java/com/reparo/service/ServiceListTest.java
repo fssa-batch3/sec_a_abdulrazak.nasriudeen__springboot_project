@@ -91,6 +91,15 @@ import static org.junit.jupiter.api.Assertions.*;
         }
 
     }
+    @Test
+    void makeServiceListLive(){
+        try {
+            assertTrue(listService.makeServiceListLive(1));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 
 
 
