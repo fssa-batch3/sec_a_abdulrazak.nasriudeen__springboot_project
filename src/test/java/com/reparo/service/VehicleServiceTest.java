@@ -26,7 +26,7 @@ import org.springframework.boot.test.context.SpringBootTest;
                 dto.setVehicleType(2);
                 dto.setUserId(953);
                 dto.setVehicleYear(2022);
-                Assertions.assertNotNull( vehicleService.addVehicle(dto));
+                Assertions.assertNotEquals( 0 ,vehicleService.addVehicle(dto));
 
             }
 

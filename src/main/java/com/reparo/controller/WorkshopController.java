@@ -74,6 +74,15 @@ private  WorkshopService workshopService;
             return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
+    @GetMapping("/reparo/workshop/isWorkshopPresent")
+    public ResponseEntity<ApiResponse> isWorkshopPresent(@RequestParam String area){
+        try {
+            workshopService.isWorkshopPresentNearByArea(area);
+            return  ResponseEntity.ok(new ApiResponse(200,"success"));
+        } catch (ServiceException e) {
+            return  ResponseEntity.ok(new ApiResponse(400,"success",e.getMessage()));
+        }
+    }
 
 
 

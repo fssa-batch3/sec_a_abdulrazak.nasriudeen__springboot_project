@@ -194,6 +194,17 @@ public class WorkshopService {
         }
 
     }
+    public boolean isWorkshopPresentNearByArea(String area) throws ServiceException{
+        try {
+            validation.stringValidation(area,"city",35);
+            List<Workshop> workshops = workshopRepository.findByCity(area);
+            if(workshops.isEmpty())throw  new ServiceException("No workshops were present in "+area);
+            return true;
+
+        } catch (ValidationException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
 
 
 }

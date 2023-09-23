@@ -86,4 +86,12 @@ import static org.junit.jupiter.api.Assertions.*;
             throw new RuntimeException(e);
         }
     }
+    @Test
+    void getNearWorkshops(){
+        try {
+            assertTrue(workshopService.isWorkshopPresentNearByArea("chennai"));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -38,9 +38,12 @@ public class VehicleService {
             Vehicle vehicle1 =  new Vehicle();
             if(vehicleRepository!=null && service !=null && userRepository!=null){
                 service.isUserExist(dto.getUserId());
+                Vehicle existVehicle = vehicleRepository.findByVehicleNumber(dto.getVehicleNumber());
+                if(existVehicle!=null) throw new ServiceException("you already registered your vehicle");
                 User user =  userRepository.findUserById(dto.getUserId());
                 Vehicle vehicle = map.mapRequestToVehicle(dto);
                 validate.vehicleCredentialValidation(vehicle);
+
                 vehicle.setUser(user);
                 vehicle1 = vehicleRepository.save(vehicle);
             }

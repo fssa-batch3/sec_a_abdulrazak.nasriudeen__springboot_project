@@ -169,7 +169,7 @@ public class Validation {
         return true;
     }
     public boolean vehicleCredentialValidation(Vehicle vehicle) throws ValidationException{
-        stringValidation(vehicle.getCompany(), "company",15);
+        stringValidation(vehicle.getCompany(), "company",30);
         vehicleNumberValidation(vehicle.getVehicleNumber());
         vehicleTypeValidation(vehicle.getType());
         vehicleYearValidation(vehicle.getYear());
