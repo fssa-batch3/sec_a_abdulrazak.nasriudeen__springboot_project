@@ -1,5 +1,6 @@
 package com.reparo.controller;
 
+import com.reparo.dto.ApiResponse;
 import com.reparo.dto.vehicle.VehicleRequestDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.VehicleService;
@@ -8,21 +9,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/vehicle")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class VehicleController {
     @Autowired
     private VehicleService vehicleService;
 
-    @PostMapping("/createVehicle")
-    public ResponseEntity<String> createVehicle(@RequestBody VehicleRequestDto requestDto){
+    @PostMapping("/reparo/vehicle/createVehicle")
+    public ResponseEntity<ApiResponse> createVehicle(@RequestBody VehicleRequestDto requestDto){
         try {
             int id =  vehicleService.addVehicle(requestDto);
-            return ResponseEntity.ok(Integer.toString(id));
+            ApiResponse response  =  new ApiResponse(200,"success");
+            response.setData(Integer.toString(id));
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
-
     }
 }
 

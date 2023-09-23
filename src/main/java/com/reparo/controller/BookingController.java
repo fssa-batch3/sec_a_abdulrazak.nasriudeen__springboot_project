@@ -1,6 +1,7 @@
 package com.reparo.controller;
 
 
+import com.reparo.dto.ApiResponse;
 import com.reparo.dto.booking.BookingAcceptRequestDto;
 import com.reparo.dto.booking.BookingRequestDto;
 
@@ -8,6 +9,8 @@ import com.reparo.dto.booking.BookingResponseDto;
 import com.reparo.dto.workshop.WorkshopDistanceResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.BookingService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,54 +18,72 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/booking")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class BookingController {
 
     @Autowired
     private BookingService bookingService;
 
-    @PostMapping("/createBooking")
-    public ResponseEntity<String> createBooking(@RequestBody BookingRequestDto request){
+    @PostMapping("/reparo/booking/createBooking")
+    public ResponseEntity<ApiResponse> createBooking(@RequestBody BookingRequestDto request){
         try {
+
           int id = bookingService.createBooking(request);
-          return ResponseEntity.ok(Integer.toString(id));
+            ApiResponse response = new ApiResponse(200,"success");
+            response.setData(Integer.toString(id));
+
+          return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
-    @PostMapping("/acceptBooking")
-    public ResponseEntity<BookingResponseDto> acceptBooking(@RequestBody BookingAcceptRequestDto request){
+    @PostMapping("/reparo/booking/acceptBooking")
+    public ResponseEntity<ApiResponse> acceptBooking(@RequestBody BookingAcceptRequestDto request){
         try {
-            return ResponseEntity.ok(bookingService.acceptBooking(request));
+            BookingResponseDto booking = bookingService.acceptBooking(request);
+            ApiResponse response = new ApiResponse(200,"success");
+            JSONObject obj =  new JSONObject(booking);
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
-    @GetMapping("/nearWorkshops")
-    public ResponseEntity<List<WorkshopDistanceResponseDto>> getNearByWorkshop(@RequestParam("bookingId")int bookingId){
+        @GetMapping("/reparo/booking/nearWorkshops")
+    public ResponseEntity<ApiResponse> getNearByWorkshop(@RequestParam("bookingId")int bookingId){
         try {
-            return ResponseEntity.ok(bookingService.getBookingNearWorkshops(bookingId));
+            List<WorkshopDistanceResponseDto> workshops = bookingService.getBookingNearWorkshops(bookingId);
+            ApiResponse response = new ApiResponse(200,"success");
+            JSONArray arr =  new JSONArray(workshops);
+            response.setData(arr.toString());
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
 
-    @GetMapping("/getBookingById")
-    public ResponseEntity<BookingResponseDto> getBookingById(@RequestParam("bookingId") int bookingId ){
+    @GetMapping("/reparo/booking/getBookingById")
+    public ResponseEntity<ApiResponse> getBookingById(@RequestParam("bookingId") int bookingId ){
         try {
-            return ResponseEntity.ok(bookingService.getBookingById(bookingId));
+            BookingResponseDto  booking  = bookingService.getBookingById(bookingId);
+            JSONObject obj =  new JSONObject(booking);
+            ApiResponse response = new ApiResponse(200,"success");
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.noContent().build();
+            return  ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
-    @GetMapping("/cancelBooking")
-    public ResponseEntity<String> cancelBooking(@RequestParam int bookingId , @RequestParam String user){
+    @GetMapping("/reparo/booking/cancelBooking")
+    public ResponseEntity<ApiResponse> cancelBooking(@RequestParam int bookingId , @RequestParam String user){
         try {
             bookingService.cancelBooking(bookingId,user);
-            return ResponseEntity.ok("true");
+           ApiResponse response = new ApiResponse(200,"success");
+           response.setData("cancelled");
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok("false");
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
 

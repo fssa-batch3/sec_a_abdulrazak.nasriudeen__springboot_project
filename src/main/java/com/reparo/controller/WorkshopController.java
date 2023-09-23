@@ -1,9 +1,12 @@
 package com.reparo.controller;
+import com.reparo.dto.ApiResponse;
 import com.reparo.dto.booking.BookingResponseDto;
 import com.reparo.dto.workshop.WorkshopRequestDto;
 import com.reparo.dto.workshop.WorkshopResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.WorkshopService;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,52 +15,63 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("/workshop")
+@RequestMapping("/api")
 @CrossOrigin(origins = "http://127.0.0.1:5501")
 public class WorkshopController {
 @Autowired
 private  WorkshopService workshopService;
 
 
-    @PostMapping("/createWorkshop")
-    public ResponseEntity<String>createWorkShop(@RequestBody WorkshopRequestDto request,@RequestParam int userId){
+    @PostMapping("/reparo/workshop/createWorkshop")
+    public ResponseEntity<ApiResponse>createWorkShop(@RequestBody WorkshopRequestDto request,@RequestParam int userId){
         request.setUserId(userId);
         try {
           int id =  workshopService.createWorkshop(request);
-            return ResponseEntity.ok(Integer.toString(id));
+            ApiResponse response =  new ApiResponse(200,"success");
+            response.setData(Integer.toString(id));
+            return ResponseEntity.ok(response);
 
         } catch (ServiceException e) {
-            return ResponseEntity.ok(e.getMessage());
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
 
         }
 
     }
-    @GetMapping("/getAllWorkshops")
-    public ResponseEntity<List<WorkshopResponseDto>> getAllWorkshops(@RequestParam int id){
+    @GetMapping("/reparo/workshop/getAllWorkshops")
+    public ResponseEntity<ApiResponse> getAllWorkshops(@RequestParam int id){
         try {
          List<WorkshopResponseDto> workshops  =  workshopService.getAllWorkshops(id);
-         return ResponseEntity.ok(workshops); 
+         ApiResponse response = new ApiResponse(200,"success");
+            JSONArray arr =  new JSONArray(workshops);
+            response.setData(arr.toString());
+         return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));         }
     }
-    @GetMapping("getWorkshopByUserId")
-        public ResponseEntity<WorkshopResponseDto> getWorkshopByUserId(@RequestParam int userId){
+    @GetMapping("/reparo/workshop/getWorkshopByUserId")
+        public ResponseEntity<ApiResponse> getWorkshopByUserId(@RequestParam int userId){
         try {
             WorkshopResponseDto dto =  workshopService.getWorkshopByUserId(userId);
-            return ResponseEntity.ok(dto);
+            ApiResponse response = new ApiResponse(200,"success");
+            JSONObject obj =  new JSONObject(dto);
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+        }
         }
 
-    }
-    @GetMapping("/getAllUnAcceptedBooking")
-    public ResponseEntity<List<BookingResponseDto>> getAllUnAcceptedBooking(@RequestParam int workshopId){
+
+    @GetMapping("/reparo/workshop/getAllUnAcceptedBooking")
+    public ResponseEntity<ApiResponse> getAllUnAcceptedBooking(@RequestParam int workshopId){
         try {
             List<BookingResponseDto> bookings  =  workshopService.getAllUnAcceptedBookingByWorkshopId(workshopId);
-            return ResponseEntity.ok(bookings);
+            ApiResponse response = new ApiResponse(200,"success");
+            JSONArray arr =  new JSONArray(bookings);
+            response.setData(arr.toString());
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
         }
     }
 
