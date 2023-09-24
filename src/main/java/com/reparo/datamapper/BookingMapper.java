@@ -24,6 +24,7 @@ public class BookingMapper {
         dto.setBookingId(booking.getBookingId());
         dto.setLive(booking.isLive());
         dto.setAcceptStatus(booking.isAcceptStatus());
+        dto.setRequest(booking.isRequestStatus());
         dto.setProblem(booking.getProblem());
         dto.setBookedCity(booking.getBookingCity());
         dto.setBookedState(booking.getBookingState());

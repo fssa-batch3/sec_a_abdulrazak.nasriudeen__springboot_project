@@ -13,9 +13,18 @@ public class BookingResponseDto extends BookingRequestDto{
     private String time;
     private String date;
     private int otp;
+    private boolean request;
 
     public int getOtp() {
         return otp;
+    }
+
+    public boolean isRequest() {
+        return request;
+    }
+
+    public void setRequest(boolean request) {
+        this.request = request;
     }
 
     public void setOtp(int otp) {

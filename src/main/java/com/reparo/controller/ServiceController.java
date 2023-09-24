@@ -1,6 +1,7 @@
 package com.reparo.controller;
 
 import com.reparo.dto.ApiResponse;
+import com.reparo.dto.service.RejectServiceListDto;
 import com.reparo.dto.service.ServiceDto;
 import com.reparo.dto.service.ServiceListResponseDto;
 import com.reparo.exception.ServiceException;
@@ -84,6 +85,27 @@ public class ServiceController {
 
         try {
             listService.makeServiceListLive(serviceDetailId);
+            return ResponseEntity.ok(new ApiResponse(200,"success"));
+        } catch (ServiceException e) {
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+
+        }
+    }
+    @PostMapping("/reparo/service/rejectServiceList")
+    public ResponseEntity<ApiResponse> rejectServiceList(@RequestBody RejectServiceListDto reject){
+        try {
+            listService.rejectServiceList(reject);
+            ApiResponse response =  new ApiResponse(200,"success");
+            return ResponseEntity.ok(response);
+        } catch (ServiceException e) {
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+        }
+    }
+    @GetMapping("/reparo/service/acceptServiceList")
+    public ResponseEntity<ApiResponse> acceptServiceList(@RequestParam int listId){
+
+        try {
+            listService.acceptServiceList(listId);
             return ResponseEntity.ok(new ApiResponse(200,"success"));
         } catch (ServiceException e) {
             return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));

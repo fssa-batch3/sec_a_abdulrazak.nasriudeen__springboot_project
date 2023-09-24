@@ -143,5 +143,24 @@ public class BookingService {
         }
     }
 
+    public List<BookingResponseDto> getBookingByWorkshopId(int workshopId) throws ServiceException{
+        try {
+           List<BookingResponseDto>  arrayList =  new ArrayList<>();
+            workshopService.isWorkshopExist(workshopId);
+            if(bookingRepository!=null && workshopRepository !=null){
+                Workshop workshop = workshopRepository.findById(workshopId);
+               List<Booking> bookings = bookingRepository.findByWorkshop(workshop);
+                if(bookings.isEmpty())throw  new ServiceException("No Booking were Available");
+                for (Booking book :bookings) {
+                    arrayList.add(map.mapBookingToResponse(book));
+                }
+
+            }
+            return arrayList ;
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+
+    }
 
     }

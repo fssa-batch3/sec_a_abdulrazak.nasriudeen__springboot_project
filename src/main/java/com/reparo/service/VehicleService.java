@@ -13,6 +13,9 @@ import com.reparo.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 
 @Service
 public class VehicleService {
@@ -69,4 +72,23 @@ public class VehicleService {
         }
 
     }
+
+    public List<VehicleResponseDto> findVehiclesByUserId(int userId) throws ServiceException{
+        try {
+            List<VehicleResponseDto> responses =  new ArrayList<>();
+            service.isUserExist(userId);
+            if(userRepository!=null&&vehicleRepository!=null){
+                User user =  userRepository.findUserById(userId);
+                List<Vehicle> vehicles =  vehicleRepository.findByUser(user);
+                if(vehicles.isEmpty()) throw new ServiceException("No vehicles Were Present");
+                for (Vehicle vehicle: vehicles) {
+                    responses.add(map.mapVehicleToResponse(vehicle));
+                }
+             }
+            return responses;
+        } catch (ServiceException e) {
+            throw new ServiceException(e.getMessage());
+        }
+    }
+
 }

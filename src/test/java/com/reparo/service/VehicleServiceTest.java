@@ -1,12 +1,17 @@
 package com.reparo.service;
 
 import com.reparo.dto.vehicle.VehicleRequestDto;
+import com.reparo.dto.vehicle.VehicleResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.repository.VehicleRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 @SpringBootTest
  class VehicleServiceTest {
@@ -53,6 +58,16 @@ import org.springframework.boot.test.context.SpringBootTest;
             } catch (ServiceException e) {
                 throw new RuntimeException(e);
             }
+        }
+    }
+    @Test
+    void getVehicleByUserId(){
+        try {
+            List<VehicleResponseDto> res = vehicleService.findVehiclesByUserId(953);
+            assertFalse(res.isEmpty());
+            System.out.println((res.size()));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
         }
     }
 

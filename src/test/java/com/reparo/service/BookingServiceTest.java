@@ -75,4 +75,13 @@ public class BookingServiceTest {
             throw new RuntimeException(e);
         }
     }
+    @Test
+    void getBookingByWorkshopId(){
+        try {
+           List<BookingResponseDto> booking = service.getBookingByWorkshopId(202);
+           assertFalse(booking.isEmpty());
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

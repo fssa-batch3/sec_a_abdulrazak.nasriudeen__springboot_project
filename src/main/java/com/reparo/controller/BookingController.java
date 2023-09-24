@@ -87,6 +87,20 @@ public class BookingController {
         }
     }
 
+    @GetMapping("/reparo/booking/getBookingsByWorkshopId")
+    public ResponseEntity<ApiResponse> getBookingsByWorkshopId(@RequestParam int workshopId){
+        try {
+            List<BookingResponseDto> bookings =  bookingService.getBookingByWorkshopId(workshopId);
+            JSONArray arr =  new JSONArray(bookings);
+            ApiResponse response  =  new ApiResponse(200,"success");
+            response.setData(arr.toString());
+            return ResponseEntity.ok(response);
+        } catch (ServiceException e) {
+            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+
+        }
+
+    }
 
 
 }
