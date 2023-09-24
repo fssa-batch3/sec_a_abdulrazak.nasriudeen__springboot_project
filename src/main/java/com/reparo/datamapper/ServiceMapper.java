@@ -39,6 +39,8 @@ public class ServiceMapper {
             listOfServiceDto.add(mapServiceToResponse(ser));
         }
         dto.setListOfServices(listOfServiceDto);
+        dto.setLive(service.isLive());
+
         return dto;
     }
 

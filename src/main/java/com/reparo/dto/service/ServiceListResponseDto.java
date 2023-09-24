@@ -18,9 +18,18 @@ public class ServiceListResponseDto {
     private BookingResponseDto bookingInfo;
 
     private List<ServiceDto> listOfServices;
+    private boolean live;
 
     public BookingResponseDto getBookingInfo() {
         return bookingInfo;
+    }
+
+    public boolean isLive() {
+        return live;
+    }
+
+    public void setLive(boolean live) {
+        this.live = live;
     }
 
     public void setBookingInfo(BookingResponseDto bookingInfo) {
