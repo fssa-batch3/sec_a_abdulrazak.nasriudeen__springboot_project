@@ -17,17 +17,17 @@ class UserServiceTest {
 private UserRepository userRepository;
 @Autowired
 private  UserService userService;
-//    @Test
-//    void saveUser(){
-//        UserRequestDto use = new UserRequestDto("abdul",9789068945L,"abd123",2);
-//        try {
-//           int id = userService.createUser(use);
-//            assertNotNull(userRepository.findById(id));
-//        } catch (ServiceException e) {
-//            throw new RuntimeException(e);
-//        }
-//
-//    }
+    @Test
+    void saveUser(){
+        UserRequestDto use = new UserRequestDto("abdul",9840326198L,"abd123",1);
+        try {
+           int id = userService.createUser(use);
+            assertNotNull(userRepository.findById(id));
+        } catch (ServiceException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
     @Test
     void loginUser(){
                 UserRequestDto use = new UserRequestDto();

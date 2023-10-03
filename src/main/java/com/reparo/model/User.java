@@ -15,9 +15,20 @@ public class User {
     private String name ;
     private String password;
     private boolean login;
+    private  String salt;
+
+
+
     public User(){
 
     } // default constructor
+    public String getSalt() {
+        return salt;
+    }
+
+    public void setSalt(String salt) {
+        this.salt = salt;
+    }
 
     public int getId() {
         return id;

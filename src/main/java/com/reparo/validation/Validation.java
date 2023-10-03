@@ -40,19 +40,15 @@ public class Validation {
         }
         return match.matches();
     }
-
     public boolean numberValidation(long number) throws ValidationException {
         // Convert the long number to a string for validation
         String str = Long.toString(number);
-
         // Check if the length of the converted string is greater than 10 digits
         if (str.length() != 10) {
             throw new ValidationException("Number should not be more or less than 10 digits");
         }
         return true;
-
     }
-
     public boolean passWordValidation(String s) throws ValidationException {
         Matcher match;
 
@@ -169,7 +165,7 @@ public class Validation {
         return true;
     }
     public boolean vehicleCredentialValidation(Vehicle vehicle) throws ValidationException{
-        stringValidation(vehicle.getCompany(), "company",30);
+        stringValidation(vehicle.getCompany(), "company",50);
         vehicleNumberValidation(vehicle.getVehicleNumber());
         vehicleTypeValidation(vehicle.getType());
         vehicleYearValidation(vehicle.getYear());

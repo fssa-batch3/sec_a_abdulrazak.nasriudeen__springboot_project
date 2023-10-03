@@ -19,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "http://127.0.0.1:5501")
+@CrossOrigin(origins = {"http://localhost:3000", "http://127.0.0.1:5501"})
 public class BookingController {
 
     @Autowired
