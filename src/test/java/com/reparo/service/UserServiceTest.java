@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
+
+
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
@@ -19,7 +21,7 @@ private UserRepository userRepository;
 private  UserService userService;
     @Test
     void saveUser(){
-        UserRequestDto use = new UserRequestDto("abdul",9840326198L,"abd123",1);
+        UserRequestDto use = new UserRequestDto("abdul",9840326188L,"abd123",2);
         try {
            int id = userService.createUser(use);
             assertNotNull(userRepository.findById(id));
@@ -31,8 +33,8 @@ private  UserService userService;
     @Test
     void loginUser(){
                 UserRequestDto use = new UserRequestDto();
-                use.setPassword("abc123");
-                use.setNumber(9840326198L);
+                use.setPassword("abd123");
+                use.setNumber(9840326188L);
         try {
           Assertions.assertNotNull(userService.loginUser(use));
         } catch (ServiceException e) {
@@ -45,8 +47,11 @@ private  UserService userService;
     void findUserByIdTest(){
         try {
             Assertions.assertNotNull(userService.findUserById(2));
-        } catch (ServiceException e) {
+        } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
+
+
+
 }

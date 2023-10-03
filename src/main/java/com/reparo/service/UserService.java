@@ -16,10 +16,11 @@ import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.util.Arrays;
 import java.util.Base64;
 
 @Service
-public class UserService{
+public class UserService extends UserPassword{
     public UserService() {
     }
 
@@ -49,7 +50,7 @@ public class UserService{
                 User existUser =  userRepository.findUserByNumber(user.getNumber());
                 if(existUser!=null)throw new ServiceException("User Already present");
                 byte[] salt = generateSalt();
-                byte[] derivedKey = deriveKey(user.getPassword(), salt, 10000, 200);
+                byte[] derivedKey = deriveKey(user.getPassword(), salt);
                 user.setSalt(Base64.getEncoder().encodeToString(salt));
                 user.setPassword(Base64.getEncoder().encodeToString(derivedKey));
                 User user1 = userRepository.save(user);
@@ -81,7 +82,8 @@ public class UserService{
             if (userRepository != null) {
                 User existUser = userRepository.findUserByNumber(request.getNumber());
                 if(existUser==null)throw new ServiceException("User not present");
-                if(!(existUser.getPassword().equals(request.getPassword())))throw new ServiceException("number or password is incorrect");
+                boolean verify = verifyPassword(request.getPassword(),existUser.getSalt(), existUser.getPassword());
+                if(!verify)throw new ServiceException("number or password is incorrect");
                 user = existUser;
                 user.setLogin(true);
                 userRepository.save(user);
@@ -110,21 +112,7 @@ public class UserService{
         }
     }
 
-    protected byte[] generateSalt() {
-        // Generate a random salt (usually 16 bytes)
-        byte[] salt = new byte[16];
-        SecureRandom random = new SecureRandom();
-        random.nextBytes(salt);
-        return salt;
-    }
-    protected static byte[] deriveKey(String password, byte[] salt, int iterations, int keyLength) throws Exception {
-        // Create a PBEKeySpec with the provided password, salt, and iteration count
-        KeySpec keySpec = new PBEKeySpec(password.toCharArray(), salt, iterations, keyLength);
 
-        // Use a SecretKeyFactory to derive the key
-        SecretKeyFactory factory = SecretKeyFactory.getInstance("PBKDF2WithHmacSHA256");
-        return factory.generateSecret(keySpec).getEncoded();
-    }
 
 
 
