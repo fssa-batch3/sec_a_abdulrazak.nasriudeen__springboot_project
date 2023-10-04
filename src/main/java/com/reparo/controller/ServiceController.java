@@ -22,11 +22,11 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> createServiceList(@RequestParam  int bookingId ) {
         try {
            int id = listService.createServiceList(bookingId);
-           ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
            response.setData(Integer.toString(id));
            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
 
@@ -34,11 +34,11 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> createService(@RequestBody ServiceDto service){
         try {
             int id = listService.createService(service);
-            ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(Integer.toString(id));
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
 
@@ -48,12 +48,12 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> getServiceById(@RequestParam int bookingId){
         try {
             ServiceListResponseDto service = listService.getServiceListById(bookingId);
-            ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONObject obj =  new JSONObject(service);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
 
     }
@@ -61,11 +61,11 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> updateService(@RequestBody ServiceDto service){
         try {
             int id =  listService.updateService(service);
-            ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(Integer.toString(id));
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
 
     }
@@ -73,9 +73,11 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> deleteService(@RequestParam int serviceId){
         try {
            listService.deleteService(serviceId);
-          return ResponseEntity.ok(new ApiResponse(200,"success"));
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
 
@@ -85,9 +87,12 @@ public class ServiceController {
 
         try {
             listService.makeServiceListLive(serviceDetailId);
-            return ResponseEntity.ok(new ApiResponse(200,"success"));
+
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
     }
@@ -95,10 +100,11 @@ public class ServiceController {
     public ResponseEntity<ApiResponse> rejectServiceList(@RequestBody RejectServiceListDto reject){
         try {
             listService.rejectServiceList(reject);
-            ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
     @GetMapping("/reparo/service/acceptServiceList")
@@ -106,9 +112,11 @@ public class ServiceController {
 
         try {
             listService.acceptServiceList(listId);
-            return ResponseEntity.ok(new ApiResponse(200,"success"));
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+
+            return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
     }

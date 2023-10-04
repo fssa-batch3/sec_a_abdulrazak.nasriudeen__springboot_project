@@ -30,36 +30,36 @@ public class BookingController {
         try {
 
           int id = bookingService.createBooking(request);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(Integer.toString(id));
 
           return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
     @PostMapping("/reparo/booking/acceptBooking")
     public ResponseEntity<ApiResponse> acceptBooking(@RequestBody BookingAcceptRequestDto request){
         try {
             BookingResponseDto booking = bookingService.acceptBooking(request);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONObject obj =  new JSONObject(booking);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
         @GetMapping("/reparo/booking/nearWorkshops")
     public ResponseEntity<ApiResponse> getNearByWorkshop(@RequestParam("bookingId")int bookingId){
         try {
             List<WorkshopDistanceResponseDto> workshops = bookingService.getBookingNearWorkshops(bookingId);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONArray arr =  new JSONArray(workshops);
             response.setData(arr.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
 
@@ -68,22 +68,22 @@ public class BookingController {
         try {
             BookingResponseDto  booking  = bookingService.getBookingById(bookingId);
             JSONObject obj =  new JSONObject(booking);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return  ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
     @GetMapping("/reparo/booking/cancelBooking")
     public ResponseEntity<ApiResponse> cancelBooking(@RequestParam int bookingId , @RequestParam String user){
         try {
             bookingService.cancelBooking(bookingId,user);
-           ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
            response.setData("cancelled");
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
 
@@ -92,11 +92,11 @@ public class BookingController {
         try {
             List<BookingResponseDto> bookings =  bookingService.getBookingByWorkshopId(workshopId);
             JSONArray arr =  new JSONArray(bookings);
-            ApiResponse response  =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(arr.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
 

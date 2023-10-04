@@ -27,12 +27,12 @@ private  WorkshopService workshopService;
         request.setUserId(userId);
         try {
           int id =  workshopService.createWorkshop(request);
-            ApiResponse response =  new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             response.setData(Integer.toString(id));
             return ResponseEntity.ok(response);
 
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
 
         }
 
@@ -41,23 +41,24 @@ private  WorkshopService workshopService;
     public ResponseEntity<ApiResponse> getAllWorkshops(@RequestParam int id){
         try {
          List<WorkshopResponseDto> workshops  =  workshopService.getAllWorkshops(id);
-         ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONArray arr =  new JSONArray(workshops);
             response.setData(arr.toString());
          return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));         }
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+        }
     }
     @GetMapping("/reparo/workshop/getWorkshopByUserId")
         public ResponseEntity<ApiResponse> getWorkshopByUserId(@RequestParam int userId){
         try {
             WorkshopResponseDto dto =  workshopService.getWorkshopByUserId(userId);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONObject obj =  new JSONObject(dto);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
         }
 
@@ -66,21 +67,22 @@ private  WorkshopService workshopService;
     public ResponseEntity<ApiResponse> getAllUnAcceptedBooking(@RequestParam int workshopId){
         try {
             List<BookingResponseDto> bookings  =  workshopService.getAllUnAcceptedBookingByWorkshopId(workshopId);
-            ApiResponse response = new ApiResponse(200,"success");
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
             JSONArray arr =  new JSONArray(bookings);
             response.setData(arr.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(400,"failure",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
     @GetMapping("/reparo/workshop/isWorkshopPresent")
     public ResponseEntity<ApiResponse> isWorkshopPresent(@RequestParam String area){
         try {
             workshopService.isWorkshopPresentNearByArea(area);
-            return  ResponseEntity.ok(new ApiResponse(200,"success"));
+            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            return  ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return  ResponseEntity.ok(new ApiResponse(400,"success",e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
         }
     }
 

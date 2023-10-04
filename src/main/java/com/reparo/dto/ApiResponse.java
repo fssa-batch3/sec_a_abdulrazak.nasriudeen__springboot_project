@@ -10,6 +10,11 @@ public class ApiResponse {
    private String data;
    private  String error;
 
+ public static   final String success = "success";
+   public static final String failed = "failed";
+   public static   final int successCode = 200;
+   public static final int failCode = 400;
+
    public ApiResponse(int statusCode, String message) {
 
       this.statusCode = statusCode;
