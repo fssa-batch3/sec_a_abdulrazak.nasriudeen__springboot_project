@@ -34,7 +34,7 @@ public class WorkshopService {
     private BookingRepository bookingRepository;
 
 
-    private final Validation validation = new Validation();
+
 
 
     private final WorkshopMapper map =  new WorkshopMapper();
@@ -78,7 +78,7 @@ public class WorkshopService {
         int id = 0 ;
         Workshop workshop = map.mapRequestToWorkshop(dto);
         try {
-            validation.workshopValidation(workshop);
+            Validation.workshopValidation(workshop);
             if(userRepository!=null&&workshopRepository!=null){
                 userService.isUserExist(dto.getUserId());
                 User user = userRepository.findUserById(dto.getUserId());
@@ -113,7 +113,7 @@ public class WorkshopService {
             List<WorkshopDistanceResponseDto> responseDtos = new ArrayList<>();
             if(workshopRepository!=null){
 
-                validation.stringValidation(city,"city",25);
+                Validation.stringValidation(city,"city",25);
                 String[] strArr =  city.toLowerCase().split(" ");
                 List<Workshop>workshops = workshopRepository.findByCity(strArr[0]);
                 if(workshops.isEmpty())throw  new ServiceException("no workshops present for this city");
@@ -140,7 +140,7 @@ public class WorkshopService {
     public List<BookingResponseDto> getUnAcceptedBooking(double lat,double lon,String city) throws ServiceException{
         try {
             List<BookingResponseDto> response =  new ArrayList<>();
-            validation.stringValidation(city,"city",25);
+            Validation.stringValidation(city,"city",25);
             String[]arr =  city.toLowerCase().split(" ");
             if(bookingRepository!=null){
                 List<Booking> bookings =  bookingRepository.findByBookingCity(arr[0]);
@@ -196,7 +196,7 @@ public class WorkshopService {
     }
     public boolean isWorkshopPresentNearByArea(String area) throws ServiceException{
         try {
-            validation.stringValidation(area,"city",35);
+            Validation.stringValidation(area,"city",35);
             List<Workshop> workshops = workshopRepository.findByCity(area);
             if(workshops.isEmpty())throw  new ServiceException("No workshops were present in "+area);
             return true;

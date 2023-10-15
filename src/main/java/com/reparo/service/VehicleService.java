@@ -26,7 +26,7 @@ public class VehicleService {
     @Autowired
     private UserService service;
     private final VehicleMapper map = new VehicleMapper();
-    private final Validation validate =  new Validation();
+
 
     public boolean isVehicleExist(int id) throws ServiceException{
         boolean exist = false;
@@ -45,7 +45,7 @@ public class VehicleService {
                 if(existVehicle!=null) throw new ServiceException("you already registered your vehicle");
                 User user =  userRepository.findUserById(dto.getUserId());
                 Vehicle vehicle = map.mapRequestToVehicle(dto);
-                validate.vehicleCredentialValidation(vehicle);
+                Validation.vehicleCredentialValidation(vehicle);
 
                 vehicle.setUser(user);
                 vehicle1 = vehicleRepository.save(vehicle);

@@ -32,8 +32,6 @@ public class BookingService {
     @Autowired
     private WorkshopRepository workshopRepository;
     private final BookingMapper map = new BookingMapper();
-    private final Validation validate =  new Validation();
-
 
     public boolean isBookingExists(int id) throws  ServiceException{
         boolean exist = false;
@@ -57,7 +55,7 @@ public class BookingService {
                 SimpleDateFormat time = new SimpleDateFormat("HH:mm");
                 newBooking.setBookingDate(date.format(current));
                 newBooking.setBookingTime(time.format(current));
-                validate.bookingCredentialValidation(newBooking);
+                Validation.bookingCredentialValidation(newBooking);
                 newBooking.setVehicle(vehicle);
                 newBooking.setRequestStatus(true);
                 newBooking.setLive(true);

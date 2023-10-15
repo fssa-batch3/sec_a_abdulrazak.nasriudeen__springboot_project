@@ -29,7 +29,6 @@ public class ServiceListService {
     private BookingRepository bookingRepository;
     @Autowired
     private BookingService bookingService;
-    private final  Validation  validate =  new Validation() ;
     private  final ServiceMapper map =  new ServiceMapper();
 
 
@@ -74,7 +73,7 @@ public class ServiceListService {
         try {
             int id = 0  ;
             ServiceList list = map.mapRequestToService(dto);
-            validate.serviceCredentialValidation(list);
+            Validation.serviceCredentialValidation(list);
             isServiceListId(dto.getServiceListId());
             if(serviceListRepository!=null && serviceRepository != null){
                 ServiceDetail serviceDetail =serviceListRepository.findByServiceDetailId(dto.getServiceListId());
@@ -91,6 +90,7 @@ public class ServiceListService {
     }
     public int updateService(ServiceDto dto) throws ServiceException{
         try {
+            Validation.serviceCredentialValidation( map.mapRequestToService(dto));
             ServiceList updated =  new ServiceList();
 
             isServiceId(dto.getServiceId());
@@ -103,7 +103,7 @@ public class ServiceListService {
                updated = serviceRepository.save(exists);
             }
             return updated.getServiceId();
-        } catch (ServiceException e) {
+        } catch (ServiceException | ValidationException e) {
             throw new ServiceException(e.getMessage());
         }
 

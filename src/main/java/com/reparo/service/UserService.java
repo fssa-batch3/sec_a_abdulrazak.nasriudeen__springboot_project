@@ -8,15 +8,8 @@ import com.reparo.exception.ServiceException;
 import com.reparo.exception.ValidationException;
 import com.reparo.model.User;
 import com.reparo.repository.UserRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
-import java.security.SecureRandom;
-import java.security.spec.KeySpec;
-import java.util.Arrays;
 import java.util.Base64;
 
 @Service
@@ -30,7 +23,6 @@ public class UserService extends UserPassword{
         this.userRepository = userRepository;
     }
     private final UserMapper map = new UserMapper();
-    private final Validation validate =  new Validation();
     public boolean isUserExist(int id) throws ServiceException{
         User user =  new User();
         if(userRepository !=  null){
