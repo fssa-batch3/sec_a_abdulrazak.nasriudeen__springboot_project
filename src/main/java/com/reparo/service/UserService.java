@@ -44,7 +44,7 @@ public class UserService extends UserPassword{
     public int createUser(UserRequestDto userDto) throws ServiceException{
         try {
             User user = map.mapRequestDtoToUser(userDto);
-            validate.userCredentialValidation(user);
+            Validation.userCredentialValidation(user);
             int id = 0 ;
             if(userRepository!=null){
                 User existUser =  userRepository.findUserByNumber(user.getNumber());
@@ -65,19 +65,23 @@ public class UserService extends UserPassword{
 
     }
     public UserResponseDto findUserByNumber(long number) throws ServiceException{
-        User user = new User();
-        if (userRepository != null) {
-            User existUser = userRepository.findUserByNumber(number);
-            if(existUser==null)throw new ServiceException("User not present");
-            user = existUser;
+        try {
+            Validation.numberValidation(number);
+            User user = new User();
+            if (userRepository != null) {
+                User existUser = userRepository.findUserByNumber(number);
+                if(existUser==null)throw new ServiceException("User not present");
+                user = existUser;
+            }
+            return map.mapUserToResponse(user);
+        } catch (ValidationException e) {
+            throw new ServiceException(e.getMessage());
         }
-
-        return map.mapUserToResponse(user);
 
     }
     public UserResponseDto loginUser(UserRequestDto request) throws ServiceException{
         try {
-            validate.loginCredentialValidation(request);
+            Validation.loginCredentialValidation(request);
             User user = new User();
             if (userRepository != null) {
                 User existUser = userRepository.findUserByNumber(request.getNumber());
@@ -98,15 +102,15 @@ public class UserService extends UserPassword{
     }
     public UserResponseDto findUserById(int id) throws  ServiceException{
         try {
-            UserResponseDto  dto  =  new UserResponseDto();
-            if(userRepository != null){
-                User user = userRepository.findUserById(id);
-                if(user == null)throw new ServiceException("User not present ");
-                dto = map.mapUserToResponse(user);
-
-
+                UserResponseDto  dto  =  new UserResponseDto();
+            if ( isUserExist(id)) {
+                if(userRepository != null){
+                    User user = userRepository.findUserById(id);
+                    dto = map.mapUserToResponse(user);
+                }
             }
-            return dto;
+                return dto;
+
         } catch (Exception e) {
             throw new ServiceException(e.getMessage());
         }

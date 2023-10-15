@@ -19,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void stringValidationTest(){
         try {
-           assertTrue(validate.stringValidation("Abdul razak","name",15));
+           assertTrue(Validation.stringValidation("Abdul razak","name",15));
         } catch (ValidationException e) {
             fail();
             throw new RuntimeException(e);
@@ -28,14 +28,14 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void stringValidationPatternFailTest(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.stringValidation("Abdul 3a2ak","name",15));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.stringValidation("Abdul 3a2ak","name",15));
 
         assertEquals("name can only contain alphabetic characters", exception.getMessage());
 
     }
     @Test
     void stringValidationLengthFailTest(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.stringValidation("Abdul razak","name",7));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.stringValidation("Abdul razak","name",7));
 
         assertEquals("name can't be more than 7", exception.getMessage());
 
@@ -43,7 +43,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void numberValidationTest(){
         try {
-           assertTrue(validate.numberValidation(8124311602L));
+           assertTrue(Validation.numberValidation(8124311602L));
         } catch (ValidationException e) {
             fail();
             throw new RuntimeException(e);
@@ -52,7 +52,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void numberValidationFailTest(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.numberValidation(81243116023L));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.numberValidation(81243116023L));
 
         assertEquals("Number should not be more or less than 10 digits", exception.getMessage());
 
@@ -61,7 +61,7 @@ import static org.junit.jupiter.api.Assertions.*;
     void testPasswordValidation(){
 
         try {
-           assertTrue(validate.passWordValidation("abd123"));
+           assertTrue(Validation.passWordValidation("abd123"));
         }catch(ValidationException e){
             fail();
             throw new RuntimeException(e);
@@ -70,7 +70,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void testInvalidPasswordValidation(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.passWordValidation("123456"));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.passWordValidation("123456"));
 
         assertEquals("Password should be in AlphaNumeric characters. Example: abc123", exception.getMessage());
 
@@ -78,14 +78,14 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void dateValidationTest(){
         try {
-            assertTrue(validate.dateValidation("22-07-2023"));
+            assertTrue(Validation.dateValidation("22-07-2023"));
         } catch (ValidationException e) {
             throw new RuntimeException(e);
         }
     }
     @Test
     void invalidDateValidation(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.dateValidation("223-07-2023"));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.dateValidation("223-07-2023"));
 
         assertEquals("Invalid Date Format", exception.getMessage());
 
@@ -93,14 +93,14 @@ import static org.junit.jupiter.api.Assertions.*;
      @Test
      void timeValidationTest(){
          try {
-             assertTrue(validate.timeValidation("12:45"));
+             assertTrue(Validation.timeValidation("12:45"));
          } catch (ValidationException e) {
              throw new RuntimeException(e);
          }
      }
      @Test
    void invalidTimeValidation(){
-         ValidationException exception = assertThrows(ValidationException.class, () -> validate.timeValidation("25:10"));
+         ValidationException exception = assertThrows(ValidationException.class, () -> Validation.timeValidation("25:10"));
 
          assertEquals("Invalid time Format", exception.getMessage());
 
@@ -109,7 +109,7 @@ import static org.junit.jupiter.api.Assertions.*;
     void addressValidation(){
         String address = "123  Main Street";
         try {
-            assertTrue(validate.addressValidation(address));
+            assertTrue(Validation.addressValidation(address));
 
         }catch(ValidationException e){
            fail();
@@ -118,7 +118,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void invalidAddressValidation(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.addressValidation("123@4990?456"));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.addressValidation("123@4990?456"));
 
         assertEquals("Address should not contain  some special characters", exception.getMessage());
 
@@ -127,7 +127,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void vehicleNumberValidationTest(){
         try {
-            assertTrue(validate.vehicleNumberValidation("TN09AB2343"));
+            assertTrue(Validation.vehicleNumberValidation("TN09AB2343"));
 
         }catch(ValidationException e){
             fail();
@@ -136,7 +136,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void invalidVehicleNumberValidationTest(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.vehicleNumberValidation("1209AB2343"));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.vehicleNumberValidation("1209AB2343"));
 
         assertEquals("Vehicle number should be Alphanumeric characters", exception.getMessage());
 
@@ -145,7 +145,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void priceValidation(){
         try {
-            assertTrue(validate.priceValidation(800));
+            assertTrue(Validation.priceValidation(800));
 
         }catch(ValidationException e){
             fail();
@@ -154,7 +154,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void invalidPriceValidation(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.priceValidation(80000));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.priceValidation(80000));
 
         assertEquals("price can't be more than 4 digits", exception.getMessage());
 
@@ -163,7 +163,7 @@ import static org.junit.jupiter.api.Assertions.*;
     @Test
     void yearValidation(){
         try {
-            assertTrue(validate.vehicleYearValidation(2020));
+            assertTrue(Validation.vehicleYearValidation(2020));
 
         }catch(ValidationException e){
             fail();
@@ -172,7 +172,7 @@ import static org.junit.jupiter.api.Assertions.*;
     }
     @Test
     void invalidYearValidation(){
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.vehicleYearValidation(2024));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.vehicleYearValidation(2024));
 
         assertEquals("Year Can't be in future", exception.getMessage());
 
@@ -186,7 +186,7 @@ import static org.junit.jupiter.api.Assertions.*;
             user.setNumber(8124311602L);
             user.setPassword("abd123");
 
-            assertTrue(validate.userCredentialValidation(user));
+            assertTrue(Validation.userCredentialValidation(user));
 
         }catch(ValidationException e){
             fail();
@@ -199,7 +199,7 @@ import static org.junit.jupiter.api.Assertions.*;
         user.setName("abdul");
         user.setNumber(81243116L);
         user.setPassword("abd123");
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.userCredentialValidation(user));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.userCredentialValidation(user));
 
         assertEquals("Number should not be more or less than 10 digits", exception.getMessage());
 
@@ -211,7 +211,7 @@ import static org.junit.jupiter.api.Assertions.*;
             UserRequestDto dto  =  new UserRequestDto();
             dto.setNumber(9840326198L);
             dto.setPassword("abd123");
-            assertTrue(validate.loginCredentialValidation(dto));
+            assertTrue(Validation.loginCredentialValidation(dto));
         } catch (ValidationException e) {
             fail();
             throw new RuntimeException(e);
@@ -223,7 +223,7 @@ import static org.junit.jupiter.api.Assertions.*;
         UserRequestDto dto  =  new UserRequestDto();
         dto.setNumber(98403261L);
         dto.setPassword("abd123");
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.loginCredentialValidation(dto));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.loginCredentialValidation(dto));
 
         assertEquals("Number should not be more or less than 10 digits", exception.getMessage());
 
@@ -247,7 +247,7 @@ import static org.junit.jupiter.api.Assertions.*;
             workshop.setCloseTime("18.30");
             workshop.setLatitude(45.67);
             workshop.setLongitude(180.0);
-            assertTrue(validate.workshopValidation(workshop));
+            assertTrue(Validation.workshopValidation(workshop));
         } catch (ValidationException e) {
             fail();
             throw new RuntimeException(e);
@@ -259,7 +259,7 @@ import static org.junit.jupiter.api.Assertions.*;
     void invalidWorkshopCredential(){
         Workshop workshop = new Workshop();
         workshop.setWorkShopName("123 auto");
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.workshopValidation(workshop));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.workshopValidation(workshop));
 
         assertEquals("workshopName can only contain alphabetic characters", exception.getMessage());
 
@@ -274,7 +274,7 @@ import static org.junit.jupiter.api.Assertions.*;
             vehicle.setVehicleNumber("TN09AB3232");
             vehicle.setType(2);
             vehicle.setYear(2022);
-            assertTrue(validate.vehicleCredentialValidation(vehicle));
+            assertTrue(Validation.vehicleCredentialValidation(vehicle));
         } catch (ValidationException e) {
             fail();
             throw new RuntimeException(e);
@@ -286,7 +286,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
         vehicle.setCompany("123 company");
 
-        ValidationException exception = assertThrows(ValidationException.class, () -> validate.vehicleCredentialValidation(vehicle));
+        ValidationException exception = assertThrows(ValidationException.class, () -> Validation.vehicleCredentialValidation(vehicle));
 
         assertEquals("company can only contain alphabetic characters", exception.getMessage());
 
@@ -303,27 +303,27 @@ import static org.junit.jupiter.api.Assertions.*;
 
     @Test
     void latitudeValidation(){
-       assertTrue(validate.isValidLatitude(45.678));
+       assertTrue(Validation.isValidLatitude(45.678));
     }
     @Test
     void longitudeValidation(){
-        assertTrue(validate.isValidLongitude(180.0));
+        assertTrue(Validation.isValidLongitude(180.0));
     }
     @Test
     void latitudeInValidation(){
-        assertFalse(validate.isValidLatitude(-91.0));
+        assertFalse(Validation.isValidLatitude(-91.0));
     }
     @Test
     void longitudeInValidation(){
-        assertFalse(validate.isValidLongitude(200.0));
+        assertFalse(Validation.isValidLongitude(200.0));
     }
     @Test
     void doesNotAlphabet(){
-        assertTrue(validate.doesNotContainAlphabets("12345"));
+        assertTrue(Validation.doesNotContainAlphabets("12345"));
     }
     @Test
     void doesAlphabet(){
-        assertFalse(validate.doesNotContainAlphabets("Hello123"));
+        assertFalse(Validation.doesNotContainAlphabets("Hello123"));
     }
 
 
