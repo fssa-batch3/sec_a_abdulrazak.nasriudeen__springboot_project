@@ -25,11 +25,11 @@ private  UserService userService ;
           JSONObject obj =  new JSONObject();
           obj.put("id",id);
           String str =  obj.toString();
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             response.setData(str);
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            ApiResponse response =  new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage());
+            ApiResponse response =  new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage());
             return ResponseEntity.ok(response);
         }
     }
@@ -39,12 +39,12 @@ private  UserService userService ;
             UserResponseDto userDto =  userService.loginUser(requestDto);
             JSONObject obj =  new JSONObject(userDto);
 
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
 
         }catch (ServiceException e ){
-            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
 
         }
     }
@@ -53,12 +53,12 @@ private  UserService userService ;
         try {
             UserResponseDto userDto = userService.findUserByNumber(number);
             JSONObject obj =  new JSONObject(userDto);
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
 
-            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
         }
 
     }
@@ -67,11 +67,11 @@ private  UserService userService ;
         try {
             UserResponseDto userDto = userService.findUserById(id);
             JSONObject obj =  new JSONObject(userDto);
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             response.setData(obj.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
         }
 
     }

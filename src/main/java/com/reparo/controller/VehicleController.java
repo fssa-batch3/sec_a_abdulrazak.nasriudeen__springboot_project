@@ -21,23 +21,23 @@ public class VehicleController {
     public ResponseEntity<ApiResponse> createVehicle(@RequestBody VehicleRequestDto requestDto){
         try {
             int id =  vehicleService.addVehicle(requestDto);
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             response.setData(Integer.toString(id));
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
         }
     }
     @GetMapping("/reparo/vehicle/findVehicleByUserId")
     public ResponseEntity<ApiResponse>findVehiclesByUserId(@RequestParam int userId){
         try {
             List<VehicleResponseDto> vehicles = vehicleService.findVehiclesByUserId(userId);
-            ApiResponse response =  new ApiResponse(ApiResponse.successCode,ApiResponse.success);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
             JSONArray arr = new JSONArray(vehicles);
             response.setData(arr.toString());
             return ResponseEntity.ok(response);
         } catch (ServiceException e) {
-            return ResponseEntity.ok(new ApiResponse(ApiResponse.failCode,ApiResponse.failed,e.getMessage()));
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
         }
     }
 }

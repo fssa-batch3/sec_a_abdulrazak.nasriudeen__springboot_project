@@ -1,7 +1,6 @@
 package com.reparo.dto;
 
 
-import org.json.JSONObject;
 
 public class ApiResponse {
    private int statusCode;
@@ -10,10 +9,10 @@ public class ApiResponse {
    private String data;
    private  String error;
 
- public static   final String success = "success";
-   public static final String failed = "failed";
-   public static   final int successCode = 200;
-   public static final int failCode = 400;
+ public static   final String SUCCESS = "success";
+   public static final String FAILED = "failed";
+   public static   final int SUCCESS_CODE = 200;
+   public static final int FAIL_CODE = 400;
 
    public ApiResponse(int statusCode, String message) {
 
