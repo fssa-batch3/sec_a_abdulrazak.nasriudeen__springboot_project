@@ -1,4 +1,5 @@
 package com.reparo.validation;
+import com.reparo.dto.booking.LiveBookingRequestDto;
 import com.reparo.dto.user.UserRequestDto;
 import com.reparo.exception.ValidationException;
 import com.reparo.model.*;
@@ -144,6 +145,11 @@ public class Validation {
         // Validate the user's number using numberValidation method
         numberValidation(user.getNumber());
         return passWordValidation(user.getPassword())&& numberValidation(user.getNumber());
+    }
+    public static boolean liveBookingRequest(LiveBookingRequestDto dto) throws ValidationException{
+        if(isValidLongitude(dto.getLongitude()) && isValidLatitude(dto.getLatitude())) return true ;
+        else throw new ValidationException("Invalid Latitude or longtude ");
+
     }
 
 

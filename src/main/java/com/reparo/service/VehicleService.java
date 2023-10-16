@@ -11,6 +11,7 @@ import com.reparo.repository.UserRepository;
 import com.reparo.repository.VehicleRepository;
 import com.reparo.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -45,7 +46,7 @@ public class VehicleService {
                 if(existVehicle!=null) throw new ServiceException("you already registered your vehicle");
                 User user =  userRepository.findUserById(dto.getUserId());
                 Vehicle vehicle = map.mapRequestToVehicle(dto);
-                Validation.vehicleCredentialValidation(vehicle);
+                Validation  .vehicleCredentialValidation(vehicle);
 
                 vehicle.setUser(user);
                 vehicle1 = vehicleRepository.save(vehicle);
@@ -85,6 +86,7 @@ public class VehicleService {
                     responses.add(map.mapVehicleToResponse(vehicle));
                 }
              }
+
             return responses;
         } catch (ServiceException e) {
             throw new ServiceException(e.getMessage());

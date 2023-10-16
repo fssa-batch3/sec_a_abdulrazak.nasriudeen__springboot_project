@@ -32,11 +32,6 @@ public class WorkshopService {
     private UserService userService;
     @Autowired
     private BookingRepository bookingRepository;
-
-
-
-
-
     private final WorkshopMapper map =  new WorkshopMapper();
     private final BookingMapper bookingMap =  new BookingMapper();
 

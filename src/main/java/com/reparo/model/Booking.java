@@ -60,11 +60,12 @@ public class Booking {
   @Column(name = "otp")
   private int otp;
 
-  // Constructors, getters, and setters (omitted for brevity)
+  @Column(name = "mec_latitude")
+  private double mecLatitude;
+  @Column(name = "mec_longitude")
+  private double mecLongitude;
 
-  // You can generate constructors, getters, and setters using your IDE or manually.
 
-  // Getters and setters for each field
 
   public int getBookingId() {
     return bookingId;
@@ -198,17 +199,27 @@ public class Booking {
     return isLive;
   }
 
+  public double getMecLatitude() {
+    return mecLatitude;
+  }
+
+  public double getMecLongitude() {
+    return mecLongitude;
+  }
+
+  public void setMecLongitude(double mecLongitude) {
+    this.mecLongitude = mecLongitude;
+  }
+
+  public void setMecLatitude(double mecLatitude) {
+    this.mecLatitude = mecLatitude;
+  }
+
   public void setLive(boolean live) {
     isLive = live;
   }
 
-  public Boolean getIsRead() {
-    return isRead;
-  }
 
-  public void setIsRead(Boolean isRead) {
-    this.isRead = isRead;
-  }
 }
 
 

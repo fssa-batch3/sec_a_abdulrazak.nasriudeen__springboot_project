@@ -3,6 +3,7 @@ import com.reparo.datamapper.BookingMapper;
 import com.reparo.dto.booking.BookingAcceptRequestDto;
 import com.reparo.dto.booking.BookingRequestDto;
 import com.reparo.dto.booking.BookingResponseDto;
+import com.reparo.dto.booking.LiveBookingRequestDto;
 import com.reparo.dto.workshop.WorkshopDistanceResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.exception.ValidationException;
@@ -14,7 +15,12 @@ import com.reparo.repository.VehicleRepository;
 import com.reparo.repository.WorkshopRepository;
 import com.reparo.validation.Validation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.AsyncResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.SettableListenableFuture;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.text.SimpleDateFormat;
@@ -80,6 +86,8 @@ public class BookingService {
                 book.setAcceptStatus(true);
                 book.setWorkshop(workshop);
                 book.setOtp(accept.getOtp());
+                book.setMecLatitude(workshop.getLatitude());
+                book.setMecLongitude(workshop.getLongitude());
                 booking = bookingRepository.save(book);
             }
 
@@ -88,6 +96,35 @@ public class BookingService {
         } catch (ServiceException e) {
             throw new ServiceException(e.getMessage());
         }
+    }
+    @Async("taskExecutor")
+    public ListenableFuture<BookingResponseDto> liveBookingTrack(LiveBookingRequestDto requestDto) throws ServiceException {
+        SettableListenableFuture<BookingResponseDto> future = new SettableListenableFuture<>();
+
+        try {
+            BookingResponseDto resp = new BookingResponseDto();
+            Validation.liveBookingRequest(requestDto);
+            isBookingExists(requestDto.getId());
+            Booking book = bookingRepository.findByBookingId(requestDto.getId());
+            if (requestDto.getRole() == 2) {
+                book.setLatitude(requestDto.getLatitude());
+                book.setLongitude(requestDto.getLongitude());
+            } else {
+                book.setMecLongitude(requestDto.getLongitude());
+                book.setMecLatitude(requestDto.getLatitude());
+            }
+            Booking booking = bookingRepository.save(book);
+            double distance = workshopService.calculateDistance(booking.getMecLatitude(), booking.getMecLongitude(),booking.getLatitude(), booking.getLongitude());
+            System.out.println(distance);
+            resp = map.mapBookingToResponse(booking);
+            resp.setDistance(distance);
+
+            future.set(resp);
+        } catch (ServiceException | ValidationException e) {
+            future.setException(e);
+        }
+
+        return future;
     }
     public List<WorkshopDistanceResponseDto> getBookingNearWorkshops(int id)throws ServiceException{
         try {
@@ -160,5 +197,6 @@ public class BookingService {
         }
 
     }
+
 
     }

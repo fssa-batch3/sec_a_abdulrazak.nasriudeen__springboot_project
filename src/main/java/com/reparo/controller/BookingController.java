@@ -6,6 +6,7 @@ import com.reparo.dto.booking.BookingAcceptRequestDto;
 import com.reparo.dto.booking.BookingRequestDto;
 
 import com.reparo.dto.booking.BookingResponseDto;
+import com.reparo.dto.booking.LiveBookingRequestDto;
 import com.reparo.dto.workshop.WorkshopDistanceResponseDto;
 import com.reparo.exception.ServiceException;
 import com.reparo.service.BookingService;
@@ -13,9 +14,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.concurrent.ListenableFuture;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("/api")
@@ -50,6 +53,20 @@ public class BookingController {
             return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
         }
     }
+    @PutMapping("/reparo/booking/updateBooking")
+    public  ResponseEntity<ApiResponse> updateLiveBooking(@RequestBody LiveBookingRequestDto requestDto){
+        try {
+            ListenableFuture<BookingResponseDto> resp  = bookingService.liveBookingTrack(requestDto);
+            ApiResponse response =  new ApiResponse(ApiResponse.SUCCESS_CODE,ApiResponse.SUCCESS);
+            JSONObject obj =  new JSONObject(resp.get());
+            response.setData(obj.toString());
+            return ResponseEntity.ok(response);
+        } catch (ServiceException | ExecutionException | InterruptedException e) {
+            return ResponseEntity.ok(new ApiResponse(ApiResponse.FAIL_CODE,ApiResponse.FAILED,e.getMessage()));
+        }
+
+    }
+
         @GetMapping("/reparo/booking/nearWorkshops")
     public ResponseEntity<ApiResponse> getNearByWorkshop(@RequestParam("bookingId")int bookingId){
         try {
